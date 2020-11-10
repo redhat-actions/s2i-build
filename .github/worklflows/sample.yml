@@ -1,0 +1,22 @@
+name: Test s2i installation
+on: [push]
+
+jobs:
+  test-s2i-job:
+    runs-on: ubuntu-latest
+    name: A job to install s2i
+    steps:
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+        with:
+          version: latest
+      - name: Run Hello World
+        run: docker run hello-world
+      - name: Install and Test s2i
+        uses: actions/s2i-build@master
+        with:
+          builder_image: "abc"
+          image_name: "abc"
+        run: |
+          s2i version
