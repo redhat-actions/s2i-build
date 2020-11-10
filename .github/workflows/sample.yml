@@ -13,10 +13,16 @@ jobs:
           version: latest
       - name: Run Hello World
         run: docker run hello-world
+      - name: Checkout
+        uses: actions/checkout@v2
+        env:
+          DEFAULT_BRANCH: main
       - name: Install and Test s2i
-        uses: actions/s2i-build@master
+        uses: ./
         with:
           builder_image: "abc"
           image_name: "abc"
-        run: |
-          s2i version
+      - name: Test installation
+        run: echo $(s2i version)
+      - name: Build Image
+        run: s2i build https://github.com/sclorg/django-ex centos/python-35-centos7 hello-python

@@ -34,4 +34,4 @@ outputs:
     description: 'The version of the inage build'
 runs:
   using: 'node12'
-  main: 'lib/src/ocExec.js'
+  main: 'lib/src/s2iExec.js'
