@@ -13,10 +13,12 @@ jobs:
           version: latest
       - name: Run Hello World
         run: docker run hello-world
+      - name: Checkout
+        uses: actions/checkout@v2
+        env:
+          DEFAULT_BRANCH: test-action
       - name: Install and Test s2i
-        uses: actions/s2i-build@master
+        uses: ./
         with:
           builder_image: "abc"
           image_name: "abc"
-        run: |
-          s2i version
