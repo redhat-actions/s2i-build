@@ -22,7 +22,8 @@
     "@actions/io": "^1.0.2",
     "@actions/tool-cache": "^1.6.0",
     "glob": "^7.1.6",
-    "mz": "^2.7.0"
+    "mz": "^2.7.0",
+    "valid-url": "^1.0.9"
   },
   "devDependencies": {
     "@types/js-yaml": "^3.12.5",

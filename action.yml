@@ -1,0 +1,37 @@
+name: 's2i Build Action'
+description: 'This action allows you to build an image of the application using source code'
+author: 'Red Hat'
+branding:
+  icon: circle
+  color: red
+inputs:
+  version:
+    description: 'Choose the s2i version you want to use to execute the command. It can be a version or an url where to download s2i. If left blank latest s2i will be used.'
+    default: 'latest'
+    required: false
+  builder_image:
+    description: 'The location of the s2i builder image.'
+    required: true
+  image_name:
+    description: 'The Name of the image to build'
+    required: true
+  image_tag:
+    description: 'The version of the image to build'
+    default: 'latest'
+    required: false
+  path_context:
+    description: 'The location of the path to run s2i from'
+    default: '.'
+    required: false
+  log_level:
+    description: 'Log level when running the S2I'
+    default: '1'
+    required: false
+outputs:
+  image_name:
+    description: 'The name of the image build'
+  version:
+    description: 'The version of the inage build'
+runs:
+  using: 'node12'
+  main: 'lib/src/ocExec.js'
