@@ -22,7 +22,7 @@ jobs:
         with:
           builder_image: "abc"
           image_name: "abc"
-      - name: Test installation
+      - name: Test s2i installation
         run: echo $(s2i version)
       - name: Build Image
         run: s2i build https://github.com/sclorg/django-ex centos/python-35-centos7 hello-python
