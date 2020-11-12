@@ -20,9 +20,15 @@ jobs:
       - name: Install and Test s2i
         uses: ./
         with:
-          builder_image: "abc"
-          image_name: "abc"
+          path_context: 'https://github.com/sclorg/django-ex'
+          builder_image: 'centos/python-35-centos7'
+          image_name: 'hello-python'
       - name: Test s2i installation
         run: echo $(s2i version)
-      - name: Build Image
-        run: s2i build https://github.com/sclorg/django-ex centos/python-35-centos7 hello-python
+      # - name: Lucas Test Push To Quay Action
+      #   uses: lstocchi/push-to-quay-action@0.0.2
+      #   with:
+      #     image-to-push: 'hello-world'
+      #     quay-registry: ${{ secrets.QUAY_REPO }}
+      #     username: ${{ secrets.QUAY_USERNAME }}
+      #     password: ${{ secrets.QUAY_PASSWORD }}
