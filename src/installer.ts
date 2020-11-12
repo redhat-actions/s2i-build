@@ -9,7 +9,7 @@ import * as ioUtil from '@actions/io/lib/io-util';
 import * as tc from '@actions/tool-cache';
 import { BinaryVersion, FindBinaryStatus } from './utils/execHelper';
 import {
-    LATEST, LINUX, MACOSX, WIN, S2I_BASE_URL, S2I_WIN_ZIP, S2I_MACOSX_TAR_GZ, S2I_LINUX_TAR_GZ
+    S2I_BASE_URL, S2I_WIN_ZIP, S2I_MACOSX_TAR_GZ, S2I_LINUX_TAR_GZ
 } from './constants';
 
 export class Installer {
@@ -59,19 +59,18 @@ export class Installer {
     static async latest(runnerOS: string): Promise<string> {
         const bundle = Installer.getS2iBundleByOS(runnerOS);
         if (!bundle) {
-          core.debug('Unable to find s2i bundle url');
-          return null;
+            core.debug('Unable to find s2i bundle url');
+            return null;
         }
-    
-        // const url = `${S2I_BASE_URL}/${LATEST}/${bundle}`;
+
         let url = `${S2I_BASE_URL}`;
         url += `${bundle}`
 
-    
+
         core.debug(`latest stable s2i version: ${url}`);
         return url;
-      }
-    
+    }
+
 
     static async downloadAndExtract(url: string, runnerOS: string): Promise<FindBinaryStatus> {
         if (!url) {
@@ -141,18 +140,18 @@ export class Installer {
    * @param s2iPath the full path to the s2i binary. Must be a non null.
    * @param osType the OS type. One of 'Linux', 'Darwin' or 'Windows_NT'.
    */
-  static addS2iToPath(s2iPath: string, osType: string): void {
-    if (!s2iPath) {
-      core.debug('Unable to add null or empty s2i path to the PATH.');
-      return;
+    static addS2iToPath(s2iPath: string, osType: string): void {
+        if (!s2iPath) {
+            core.debug('Unable to add null or empty s2i path to the PATH.');
+            return;
+        }
+        let dir = '';
+        if (osType.includes('Windows')) {
+            dir = s2iPath.substr(0, s2iPath.lastIndexOf('\\'));
+        } else {
+            dir = s2iPath.substr(0, s2iPath.lastIndexOf('/'));
+        }
+        core.addPath(dir);
     }
-    let dir = '';
-    if (osType.includes('Windows')) {
-      dir = s2iPath.substr(0, s2iPath.lastIndexOf('\\'));
-    } else {
-      dir = s2iPath.substr(0, s2iPath.lastIndexOf('/'));
-    }
-    core.addPath(dir);
-  }
 
 }
