@@ -30,7 +30,7 @@ export class Installer {
     }
 
     static async getS2iURLToDownload(version: BinaryVersion, runnerOS: string): Promise<string> {
-        let url = '';
+        let url = `${S2I_BASE_URL}`;
         if (!version.valid) {
             return undefined;
         }
