@@ -1,3 +1,4 @@
 out/
 *.tsbuildinfo
+lib/
 node_modules/
