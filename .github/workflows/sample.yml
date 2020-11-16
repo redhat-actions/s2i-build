@@ -14,7 +14,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         env:
-          DEFAULT_BRANCH: modify-structure
+          DEFAULT_BRANCH: main
       - name: Install s2i
         uses: ./
         with:
