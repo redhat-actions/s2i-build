@@ -1,4 +1,4 @@
-name: 's2i Build Action'
+name: 'Source to Image Build'
 description: 'This action allows you to build an image of the application using source code'
 author: 'Red Hat'
 branding:
