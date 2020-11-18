@@ -1,0 +1,41 @@
+# This workflow will perform a test whenever there
+# is some change in code done to ensure that the 
+# changes are not buggy and we are getting desired output.
+
+name: Install, Build and Test
+on: [push, pull_request]
+
+jobs:
+  test-s2i-job:
+    runs-on: ubuntu-latest
+    # This will install latest version of s2i and
+    # to build the image and using Docker we will
+    # run the image to verify the build.
+    name: A job to install s2i to build and run image
+    steps:
+      # Setup Docker Deamon as Docker Daemon should be
+      # running to successfully build image using s2i
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+        with:
+          version: latest
+
+      # Checkout spring petclinic repository
+      - name: Checkout
+        uses: actions/checkout@v2
+        with: 
+          repository: 'go-training/helloworld'
+
+      # Setup S2i and Build container image
+      - name: Setup and Build
+        uses: Divyansh42/s2i-build-test@v0.0.2
+        with:
+          path_context: '.'
+          builder_image: 'registry.access.redhat.com/devtools/go-toolset-rhel7'
+          image_name: go-hello-world
+          image_tag: 'v1'
+
+      # Run image to verify the build
+      - name: Run image
+        run: docker run go-hello-world:v1
