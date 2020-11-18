@@ -2,7 +2,7 @@
 # is some change in code done to ensure that the 
 # changes are not buggy and we are getting desired output.
 
-name: Install, Build and Test
+name: Install and Build
 on: [push, pull_request]
 
 jobs:
