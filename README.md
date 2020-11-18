@@ -1,5 +1,8 @@
 # s2i-build
-
+[![s2i-build Example](https://github.com/redhat-actions/s2i-build/workflows/Build%20and%20Push/badge.svg)](https://github.com/redhat-actions/s2i-build/actions?query=workflow%3A"Build+and+Push")
+[![Verify Build](https://github.com/redhat-actions/s2i-build/workflows/Install%20and%20Build/badge.svg)](https://github.com/redhat-actions/s2i-build/actions?query=workflow%3A%22Install%2C+Build+and+Test%22)
+[![Verify Bundle](https://github.com/redhat-actions/s2i-build/workflows/Verify%20Bundle/badge.svg)](https://github.com/redhat-actions/s2i-build/actions?query=workflow%3A%22Verify+Bundle%22)
+<br></br>
 [![tag badge](https://img.shields.io/github/v/tag/redhat-actions/s2i-build?sort=semver)](https://github.com/redhat-actions/s2i-build/tags)
 [![license badge](https://img.shields.io/github/license/redhat-actions/s2i-build)](./LICENSE)
 [![size badge](https://img.shields.io/github/size/redhat-actions/s2i-build/dist/index.js)](./dist)
@@ -84,9 +87,8 @@ steps:
   # Checkout the project repository
   - name: Checkout
     uses: actions/checkout@v2
-    env:
-      DEFAULT_BRANCH: main
-
+    with:
+      repository: spring-projects/spring-petclinic
   # Setup S2i and Build container image
   - name: Setup and Build
     uses: redhat-actions/s2i-build@v1
@@ -101,7 +103,7 @@ steps:
   - name: Push To Quay Action
     uses: redhat-actions/push-to-registry@v1
     with:
-      image-to-push: 'spring-petclinic-s2i'
+      image: 'spring-petclinic-s2i'
       tag: 'v1'
       registry: ${{ secrets.QUAY_REPO }}
       username: ${{ secrets.QUAY_USERNAME }}
