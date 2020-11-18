@@ -33,7 +33,9 @@ This Action needs a `Docker daemon` to be running. Suggest running [Docker Setup
 
   <tr>
     <td>builder_image</td>
-    <td>(Required) The location of the s2i builder image. Refer below for curated list of builder images to use for s2i </td>
+    <td>(Required) The location of the s2i builder image. Refer below for the curated list of
+    <a href="#builder-images">Builder Images</a>
+    to use for s2i </td>
   </tr>
 
   <tr>
@@ -43,7 +45,7 @@ This Action needs a `Docker daemon` to be running. Suggest running [Docker Setup
 
   <tr>
     <td>image_tag</td>
-    <td>(Optional) The version of the image to build. Image will be tagged with the version provided. </td>
+    <td>(Optional) The version of the image to build. Image will be tagged with the version provided. If not provided, it defaults to <code>latest</code></td>
   </tr>
 
   <tr>
