@@ -29,7 +29,7 @@ jobs:
 
       # Setup S2i and Build container image
       - name: Setup and Build
-        uses: Divyansh42/s2i-build-test@v0.0.2
+        uses: redhat-actions/s2i-build@v1
         with:
           path_context: '.'
           builder_image: 'registry.access.redhat.com/devtools/go-toolset-rhel7'

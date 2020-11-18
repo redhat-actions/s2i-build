@@ -1,0 +1,44 @@
+# This example workflow will build container image
+# of the application using source to image build
+# startegy and push the image to quay.io (Image registry)
+
+name: Build and Push
+on: [push, pull_request]
+
+jobs:
+  test-s2i-job:
+    runs-on: ubuntu-latest
+    name: A job to build and push image
+    steps:
+      # Setup Docker Deamon as Docker Daemon should be
+      # running to successfully build image using s2i
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+        with:
+          version: latest
+
+      # Checkout spring petclinic repository
+      - name: Checkout
+        uses: actions/checkout@v2
+        with: 
+          repository: divyansh42/spring-petclinic
+
+      # Setup S2i and Build container image
+      - name: Setup and Build
+        uses: redhat-actions/s2i-build@v1
+        with:
+          path_context: '.'
+          builder_image: 'fabric8/s2i-java'
+          image_name: spring-petclinic-s2i
+          image_tag: 'v1'
+          
+      # Push Image to Quay registry
+      - name: Push To Quay Action
+        uses: redhat-actions/push-to-registry@v1
+        with:
+          image: 'spring-petclinic-s2i'
+          tag: 'v1'
+          registry: ${{ secrets.REPO }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
