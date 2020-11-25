@@ -22,20 +22,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with: 
-          repository: divyansh42/spring-petclinic
+          repository: spring-projects/spring-petclinic
 
       # Setup S2i and Build container image
       - name: Setup and Build
-        uses: redhat-actions/s2i-build@v1
+        uses: redhat-actions/s2i-build@main
         with:
           path_context: '.'
-          builder_image: 'fabric8/s2i-java'
+          builder_image: 'registry.access.redhat.com/openjdk/openjdk-11-rhel7'
           image_name: spring-petclinic-s2i
           image_tag: 'v1'
           
       # Push Image to Quay registry
       - name: Push To Quay Action
-        uses: redhat-actions/push-to-registry@v1
+        uses: redhat-actions/push-to-registry@main
         with:
           image: 'spring-petclinic-s2i'
           tag: 'v1'
