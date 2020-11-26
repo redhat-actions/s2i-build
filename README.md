@@ -93,6 +93,7 @@ steps:
     uses: actions/checkout@v2
     with:
       repository: spring-projects/spring-petclinic
+      
   # Setup S2i and Build container image
   - name: Setup and Build
     uses: redhat-actions/s2i-build@v1
