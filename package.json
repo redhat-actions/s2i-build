@@ -9,8 +9,7 @@
   "scripts": {
     "compile": "tsc -p .",
     "bundle": "ncc build src/s2iExec.ts --source-map --minify",
-    "clean": "rm -rf out/ dist/",
-    "generate-ins-outs": "ts-node scripts/generate-ins-outs.ts"
+    "clean": "rm -rf lib/ dist/"
   },
   "keywords": [],
   "author": "Red Hat Inc.",
@@ -18,7 +17,6 @@
   "dependencies": {
     "@actions/core": "^1.2.6",
     "@actions/exec": "^1.0.4",
-    "@actions/github": "^4.0.0",
     "@actions/io": "^1.0.2",
     "@actions/tool-cache": "^1.6.0",
     "glob": "^7.1.6",
@@ -26,11 +24,8 @@
     "valid-url": "^1.0.9"
   },
   "devDependencies": {
-    "@types/js-yaml": "^3.12.5",
     "@types/node": "^12.19.4",
     "@vercel/ncc": "^0.24.1",
-    "js-yaml": "^3.14.0",
-    "ts-node": "^9.0.0",
     "typescript": "^4.0.5"
   }
 }
