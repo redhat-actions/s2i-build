@@ -1,5 +1,5 @@
 # This workflow will perform a test whenever there
-# is some change in code done to ensure that the 
+# is some change in code done to ensure that the
 # changes are not buggy and we are getting desired output.
 
 name: Install and Build
@@ -11,13 +11,13 @@ jobs:
     # This will install latest version of s2i and
     # to build the image and using Docker we will
     # run the image to verify the build.
-    name: A job to install s2i to build and run image
+    name: Install S2I and build image
     steps:
 
       # Checkout spring petclinic repository
       - name: Checkout
         uses: actions/checkout@v2
-        with: 
+        with:
           repository: 'go-training/helloworld'
 
       # Setup S2i and Build container image
