@@ -13,13 +13,6 @@ jobs:
     # run the image to verify the build.
     name: A job to install s2i to build and run image
     steps:
-      # Setup Docker Deamon as Docker Daemon should be
-      # running to successfully build image using s2i
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
-        with:
-          version: latest
 
       # Checkout spring petclinic repository
       - name: Checkout
