@@ -7,7 +7,7 @@
 [![license badge](https://img.shields.io/github/license/redhat-actions/s2i-build)](./LICENSE)
 [![size badge](https://img.shields.io/github/size/redhat-actions/s2i-build/dist/index.js)](./dist)
 
-`s2-build` is a Github Action to build `container images` from the `source code`.
+`s2i-build` is a Github Action to build `container images` from the `source code`.
 
 [Source-to-Image (S2I)](https://github.com/openshift/source-to-image) is a toolkit and workflow for building reproducible
 container images from `source code`.
@@ -16,13 +16,13 @@ and letting the container prepare that source code for execution. The base
 S2I container images contains the language runtime and build tools needed for
 building and running the source code.
 
-s2i-build action works on `Linux`, `Windows` and on `Mac` platforms.
+`s2i-build` action works on only `Linux` platforms as of now.
 
 This Action will install [`latest`](https://github.com/openshift/source-to-image/releases/tag/v1.3.1) version of s2i such that it can build the image
 from the source code.
 
-## Pre-requisites
-This Action needs a `Docker daemon` to be running. Suggest running [Docker Setup Buildx](https://github.com/marketplace/actions/docker-setup-buildx) to setup Docker Daemon.
+**NOTE:** Since this action assumes to have `Docker daemon` to be running, if you are using Ubuntu envoirnments for running the actions it already has Docker daemon running. 
+For other envoirnments, suggest running [Docker Setup Buildx](https://github.com/marketplace/actions/docker-setup-buildx) to setup Docker Daemon.
 
 ## Action Inputs
 
@@ -30,40 +30,52 @@ This Action needs a `Docker daemon` to be running. Suggest running [Docker Setup
   <thead>
     <tr>
       <th>Input</th>
+      <th>Required</th>
+      <th>Default</th>
       <th>Description</th>
     </tr>
   </thead>
 
   <tr>
     <td>builder_image</td>
-    <td>(Required) The location of the s2i builder image. Refer below for the curated list of
+    <td>Yes</td>
+    <td>-</td>
+    <td>The location of the s2i builder image. Refer below for the curated list of
     <a href="#builder-images">Builder Images</a>
     to use for s2i </td>
   </tr>
 
   <tr>
     <td>image_name</td>
-    <td>(Required) The Name of the image to build. </td>
+     <td>Yes</td>
+    <td>-</td>
+    <td>The Name of the image to build. </td>
   </tr>
 
   <tr>
     <td>image_tag</td>
-    <td>(Optional) The version of the image to build. Image will be tagged with the version provided. If not provided, it defaults to <code>latest</code></td>
+    <td>No</td>
+    <td>latest</td>
+    <td>The version of the image to build. Image will be tagged with the version provided.</td>
   </tr>
 
   <tr>
     <td>path_context</td>
-    <td>(Optional) The location of the path to run s2i from. This should be location where your source code is stored. </td>
+    <td>No</td>
+    <td><code>.</code></td>
+    <td>The location of the path to run s2i from. This should be location where your source code is stored. </td>
   </tr>
 
   <tr>
     <td>log_level</td>
-    <td>(Optional) Log level when running the S2I. Can be changed based on the requirements. </td>
+    <td>No</td>
+    <td>1</td>
+    <td>Log level when running the S2I. Can be changed based on the requirements. </td>
   </tr>
 
 </table>
 
-Once the image is build using this action. [`Push to registry`](https://github.com/redhat-actions/push-to-registry) action can be used to `push` the image to the desired image registry.
+Once the image is build using this action. [`push-to-registry`](https://github.com/redhat-actions/push-to-registry) action can be used to `push` the image to the desired image registry.
 
 Below is the example for end to end workflow to build and push image using s2i-build action.
 
@@ -76,14 +88,6 @@ Below is the example for end to end workflow to build and push image using s2i-b
 
 steps:
 
-  # Setup Docker Deamon as Docker Daemon should be
-  # running to successfully build image using s2i
-  - name: Set up Docker Buildx
-    id: buildx
-    uses: docker/setup-buildx-action@v1
-    with:
-      version: latest
-
   # Checkout the project repository
   - name: Checkout
     uses: actions/checkout@v2
@@ -95,7 +99,7 @@ steps:
     with:
       path_context: '.'
       # Builder image for java project
-      builder_image: 'registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift'
+      builder_image: 'registry.access.redhat.com/openjdk/openjdk-11-rhel7'
       image_name: spring-petclinic-s2i
       image_tag: 'v1'
       
@@ -143,9 +147,9 @@ Here is a non-exhaustive list of well maintained s2i builder image:
   - [`centos/python-27-centos7`](https://hub.docker.com/r/centos/python-27-centos7)
   - [`centos/python-35-centos7`](https://hub.docker.com/r/centos/python-35-centos7)
   - [`centos/python-36-centos7`](https://hub.docker.com/r/centos/python-36-centos7)
-  - [`centos/python-37-centos7`](https://hub.docker.com/r/centos/python-37-centos7)
+  - [`centos/python-38-centos7`](https://hub.docker.com/r/centos/python-38-centos7)
   - `registry.access.redhat.com/rhscl/python-27-rhel7`
-  - `registry.access.redhat.com/rhscl/python-37-rhel7`
+  - `registry.access.redhat.com/rhscl/python-36-rhel7`
 
 - **ruby**
   - [`centos/ruby-23-centos7`](https://hub.docker.com/r/centos/ruby-23-centos7)
