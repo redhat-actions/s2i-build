@@ -2,8 +2,12 @@
 # is some change in code done to ensure that the
 # changes are not buggy and we are getting desired output.
 
-name: Install and Build
-on: [push, pull_request]
+name: Verify Build
+on: [push, pull_request, workflow_dispatch]
+env:
+  TEST_REPO: helloworld
+  IMAGE_NAME: hello-world
+  IMAGE_TAG: latest
 
 jobs:
   test-s2i-job:
@@ -14,21 +18,48 @@ jobs:
     name: Install S2I and build image
     steps:
 
-      # Checkout spring petclinic repository
+      # Fetch name of the Forked Repository with Branch
+      # if workflow is triggered from pull request
+      - name: Fetch PR head repo and branch name
+        if: github.event_name == 'pull_request'
+        run: |
+          HEAD_REPO_NAME=$(jq -r '.pull_request.head.repo.full_name' "$GITHUB_EVENT_PATH")
+          echo "PR head repo: $HEAD_REPO_NAME"
+          echo "repo=$HEAD_REPO_NAME" >> $GITHUB_ENV
+          echo "branch=$GITHUB_HEAD_REF" >> $GITHUB_ENV
+
+      # Extract repository name with branch
+      - name: Fetch Repository name with branch
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          echo "repo=$GITHUB_REPOSITORY" >> $GITHUB_ENV
+          echo "branch=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+
+      # Checkout S2I action github repository
+      - name: Checkout s2i-build action
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ env.repo }}
+          ref: ${{ env.branch }}
+          path: 's2i-build'
+
+      # Checkout hello-world repository for testing
       - name: Checkout
         uses: actions/checkout@v2
         with:
           repository: 'go-training/helloworld'
+          path: ${{ env.TEST_REPO }}
 
       # Setup S2i and Build container image
       - name: Setup and Build
-        uses: redhat-actions/s2i-build@v1
+        uses: ./s2i-build/
         with:
-          path_context: '.'
+          path_context: './${{ env.TEST_REPO }}'
           builder_image: 'registry.access.redhat.com/devtools/go-toolset-rhel7'
-          image_name: go-hello-world
-          image_tag: 'v1'
+          image_name: ${{ env.IMAGE_NAME }}
+          image_tag: ${{ env.IMAGE_TAG }}
 
       # Run image to verify the build
       - name: Run image
-        run: docker run go-hello-world:v1
+        run: docker run ${{ env.IMAGE_NAME}}:${{ env.IMAGE_TAG }}
