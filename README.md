@@ -3,7 +3,7 @@
 [![Verify Build](https://github.com/redhat-actions/s2i-build/workflows/Install%20and%20Build/badge.svg)](https://github.com/redhat-actions/s2i-build/actions?query=workflow%3A%22Install%2C+Build+and+Test%22)
 [![Verify Bundle](https://github.com/redhat-actions/s2i-build/workflows/Verify%20Bundle/badge.svg)](https://github.com/redhat-actions/s2i-build/actions?query=workflow%3A%22Verify+Bundle%22)
 <br></br>
-[![tag badge](https://img.shields.io/github/v/tag/redhat-actions/s2i-build?sort=semver)](https://github.com/redhat-actions/s2i-build/tags)
+[![tag badge](https://img.shields.io/github/v/tag/redhat-actions/s2i-build)](https://github.com/redhat-actions/s2i-build/tags)
 [![license badge](https://img.shields.io/github/license/redhat-actions/s2i-build)](./LICENSE)
 [![size badge](https://img.shields.io/github/size/redhat-actions/s2i-build/dist/index.js)](./dist)
 
@@ -44,8 +44,8 @@ Once an image has been built, [push-to-registry](https://github.com/redhat-actio
     <td>Yes</td>
     <td>-</td>
     <td>
-      The location of the S2I builder image. Curated list of builder images can be found
-      <a href="https://github.com/redhat-actions/s2i-build/blob/main/builder-images.md">here</a>.
+      The location of the S2I builder image. A curated list of builder images can be found
+      <a href="./builder-images.md">here</a>.
     </td>
   </tr>
 
@@ -81,11 +81,11 @@ Once an image has been built, [push-to-registry](https://github.com/redhat-actio
 
 ## Builder Images
 
-Please refer [here](https://github.com/redhat-actions/s2i-build/blob/main/builder-images.md) for curated list of well maintained builder images to use for S2I.
+Please refer [here](./builder-images.md) for a curated list of well maintained builder images to use for S2I.
 
 ## Examples
 
-Below is an example for end to end workflow to build and push a Java application image using s2i-build action.
+Below is an example end to end workflow to build and push a Java application image using s2i-build.
 
 ```yaml
 # This workflow builds a container image of a java
