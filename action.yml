@@ -23,6 +23,9 @@ inputs:
     description: 'Log level when running the S2I'
     default: '1'
     required: false
+  env_vars:
+    description: 'List of environment variable key-value pairs to pass to the s2i builder context'
+    required: false
 runs:
   using: 'node12'
   main: 'dist/index.js'

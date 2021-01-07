@@ -77,6 +77,13 @@ Once an image has been built, [push-to-registry](https://github.com/redhat-actio
     <td><a href="https://github.com/openshift/source-to-image/blob/master/docs/cli.md#log-levels">Log level</a> when running S2I. Can be 0 (least verbose) to 5 (most verbose).</td>
   </tr>
 
+  <tr>
+    <td>env_vars</td>
+    <td>No</td>
+    <td>-</td>
+    <td>List of environment variable key-value pairs to pass to the s2i builder context. (eg. <code>key=value</code>, <code>mysecret=${{ secrets.MY_SECRET }}</code> ).</td>
+  </tr>
+
 </table>
 
 ## Builder Images
