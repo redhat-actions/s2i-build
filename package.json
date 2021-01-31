@@ -24,6 +24,7 @@
     "valid-url": "^1.0.9"
   },
   "devDependencies": {
+    "@redhat-actions/action-io-generator": "^1.2.0",
     "@types/node": "^12.19.4",
     "@vercel/ncc": "^0.24.1",
     "typescript": "^4.0.5"

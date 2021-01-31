@@ -5,6 +5,7 @@
 import * as core from "@actions/core";
 import { Command } from "./command";
 import { Installer } from "./installer";
+import { Inputs } from "./generated/inputs-outputs";
 import * as fs from "fs";
 import * as path from "path";
 import {
@@ -13,15 +14,14 @@ import {
   FindBinaryStatus,
   getReason,
 } from "./utils/execHelper";
-import { fileURLToPath } from "url";
 
 export async function run(): Promise<void> {
-  const builderImage = core.getInput("builder_image", { required: true });
-  const imageName = core.getInput("image_name", { required: true });
-  const imageTag = core.getInput("image_tag", { required: false });
-  const pathContext = core.getInput("path_context", { required: false });
-  const logLevel = core.getInput("log_level", { required: false });
-  const envVars = core.getInput("env_vars", { required: false });
+  const builderImage = core.getInput(Inputs.BUILDER_IMAGE, { required: true });
+  const imageName = core.getInput(Inputs.IMAGE_NAME, { required: true });
+  const imageTag = core.getInput(Inputs.IMAGE_TAG, { required: false });
+  const pathContext = core.getInput(Inputs.PATH_CONTEXT, { required: false });
+  const logLevel = core.getInput(Inputs.LOG_LEVEL, { required: false });
+  const envVars = core.getInput(Inputs.ENV_VARS, { required: false });
   const runnerOS = process.env.RUNNER_OS;
 
   const version = "v1.3.1";
