@@ -28,10 +28,10 @@ export class Installer {
         return s2iBinary;
     }
 
-    static async getS2iURLToDownload(version: BinaryVersion, runnerOS: string): Promise<string | null> {
-        let url: string | null = `${S2I_BASE_URL}`;
+    static async getS2iURLToDownload(version: BinaryVersion, runnerOS: string): Promise<string | undefined> {
+        let url: string | undefined = `${S2I_BASE_URL}`;
         if (!version.valid) {
-            return null;
+            return undefined;
         }
 
         if (version.type === "url") {
@@ -46,7 +46,7 @@ export class Installer {
         const bundle = Installer.getS2iBundleByOS(runnerOS);
         if (!bundle) {
             core.debug("Unable to find s2i bundle url");
-            return null;
+            return undefined;
         }
 
         url += bundle;
@@ -55,11 +55,11 @@ export class Installer {
         return url;
     }
 
-    static async latest(runnerOS: string): Promise<string | null> {
+    static async latest(runnerOS: string): Promise<string | undefined> {
         const bundle = Installer.getS2iBundleByOS(runnerOS);
         if (!bundle) {
             core.debug("Unable to find s2i bundle url");
-            return null;
+            return undefined;
         }
 
         let url = `${S2I_BASE_URL}`;
@@ -96,7 +96,7 @@ export class Installer {
         return { found: true, path: s2iBinary };
     }
 
-    static getS2iBundleByOS(runnerOS: string): string | null {
+    static getS2iBundleByOS(runnerOS: string): string | undefined {
         let url = "";
         // determine the bundle path based on the OS type
         switch (runnerOS) {
@@ -113,7 +113,7 @@ export class Installer {
             break;
         }
         default: {
-            return null;
+            return undefined;
         }
         }
         return url;
