@@ -1,7 +1,6 @@
 # s2i-build
-[![s2i-build Example](https://github.com/redhat-actions/s2i-build/workflows/Build%20and%20Push/badge.svg)](https://github.com/redhat-actions/s2i-build/actions?query=workflow%3A"Build+and+Push")
-[![Verify Build](https://github.com/redhat-actions/s2i-build/workflows/Install%20and%20Build/badge.svg)](https://github.com/redhat-actions/s2i-build/actions?query=workflow%3A%22Install%2C+Build+and+Test%22)
-[![Verify Bundle](https://github.com/redhat-actions/s2i-build/workflows/Verify%20Bundle/badge.svg)](https://github.com/redhat-actions/s2i-build/actions?query=workflow%3A%22Verify+Bundle%22)
+[![CI checks](https://github.com/redhat-actions/s2i-build/workflows/CI%20checks/badge.svg)](https://github.com/redhat-actions/s2i-build/actions?query=workflow%3A%22CI+checks%22)
+[![Verify Build](https://github.com/redhat-actions/s2i-build/workflows/Verify%20Build/badge.svg)](https://github.com/redhat-actions/s2i-build/actions?query=workflow%3A%22Verify+Build%22)
 <br></br>
 [![tag badge](https://img.shields.io/github/v/tag/redhat-actions/s2i-build)](https://github.com/redhat-actions/s2i-build/tags)
 [![license badge](https://img.shields.io/github/license/redhat-actions/s2i-build)](./LICENSE)
