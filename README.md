@@ -1,6 +1,7 @@
 # s2i-build
 [![CI checks](https://github.com/redhat-actions/s2i-build/workflows/CI%20checks/badge.svg)](https://github.com/redhat-actions/s2i-build/actions?query=workflow%3A%22CI+checks%22)
 [![Verify Build](https://github.com/redhat-actions/s2i-build/workflows/Verify%20Build/badge.svg)](https://github.com/redhat-actions/s2i-build/actions?query=workflow%3A%22Verify+Build%22)
+[![Link checker](https://github.com/redhat-actions/s2i-build/workflows/Link%20checker/badge.svg)](https://github.com/redhat-actions/s2i-build/actions?query=workflow%3A%22Link+checker%22)
 <br></br>
 [![tag badge](https://img.shields.io/github/v/tag/redhat-actions/s2i-build)](https://github.com/redhat-actions/s2i-build/tags)
 [![license badge](https://img.shields.io/github/license/redhat-actions/s2i-build)](./LICENSE)
@@ -127,15 +128,3 @@ steps:
       password: ${{ secrets.QUAY_PASSWORD }}
 
 ```
-
-## Contributing
-
-This is an open source project open to anyone. This project welcomes contributions and suggestions!
-
-## Feedback & Questions
-
-If you discover an issue please file a bug in [GitHub Issues](https://github.com/redhat-actions/s2i-build/issues) and we will fix it as soon as possible.
-
-## License
-
-MIT, See [LICENSE](./LICENSE) for more information.
