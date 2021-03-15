@@ -33,6 +33,7 @@ export async function run(): Promise<void> {
     }
 
     Installer.addS2iToPath(s2iBinary.path, runnerOS);
+    await Command.execute(s2iBinary.path, [ "version" ]);
 
     const buildCmd = [ "build", pathContext, builderImage, `${imageName}:${imageTag}`,
         "--loglevel", logLevel ];
