@@ -34,7 +34,9 @@ export async function run(): Promise<void> {
 
     Installer.addS2iToPath(s2iBinary.path, runnerOS);
 
-    let envCmd = "";
+    const buildCmd = [ "build", pathContext, builderImage, `${imageName}:${imageTag}`,
+        "--loglevel", logLevel ];
+
     if (envVars) {
         const sha = process.env.GITHUB_SHA;
         const shortSha = sha ? sha.substring(0, 7) : "";
@@ -43,13 +45,13 @@ export async function run(): Promise<void> {
         const envFilePath = path.join(process.cwd(), envFileName);
 
         await fs.promises.writeFile(envFilePath, envVars);
-        envCmd = `--environment-file ${envFilePath}`;
 
         const envCount = envVars.split("\n").length;
         core.info(`Writing ${envCount} environment variables to ${envFilePath}`);
-    }
 
-    const buildCmd = [ "build", pathContext, builderImage, `${imageName}:${imageTag}`, "--loglevel", logLevel, envCmd ];
+        buildCmd.push("--environment-file");
+        buildCmd.push(envFilePath);
+    }
 
     await Command.execute(s2iBinary.path, buildCmd);
 }
