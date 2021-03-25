@@ -3,7 +3,13 @@
 # changes are not buggy and we are getting desired output.
 
 name: Verify Build
-on: [push, pull_request, workflow_dispatch]
+on:
+  push:
+  workflow_dispatch:
+  pull_request:
+  schedule:
+    - cron: '0 0 * * *'  # every day at midnight
+
 env:
   TEST_REPO: helloworld
   IMAGE_NAME: hello-world
@@ -17,7 +23,7 @@ jobs:
     # run the image to verify the build.
     name: Install S2I and build image
     steps:
-    
+
       # Checkout S2I action github repository
       - name: Checkout s2i-build action
         uses: actions/checkout@v2
