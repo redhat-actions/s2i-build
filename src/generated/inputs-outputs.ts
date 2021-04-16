@@ -19,11 +19,11 @@ export enum Inputs {
      */
     IMAGE_NAME = "image_name",
     /**
-     * The version of the image to build
+     * The tags of the image to build. For multiple tags, seperate by a space. For example, "latest v1".
      * Required: false
      * Default: "latest"
      */
-    IMAGE_TAG = "image_tag",
+    IMAGE_TAGS = "image_tags",
     /**
      * Log level when running the S2I
      * Required: false
@@ -39,4 +39,16 @@ export enum Inputs {
 }
 
 export enum Outputs {
+    /**
+     * Name of the image built
+     * Required: false
+     * Default: None.
+     */
+    IMAGE = "image",
+    /**
+     * List of the tags that were created, separated by spaces
+     * Required: false
+     * Default: None.
+     */
+    TAGS = "tags",
 }
