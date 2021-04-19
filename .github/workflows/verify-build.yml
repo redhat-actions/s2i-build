@@ -13,7 +13,7 @@ on:
 env:
   TEST_REPO: helloworld
   IMAGE_NAME: hello-world
-  IMAGE_TAGS: latest v1
+  TAGS: latest v1
 
 jobs:
   test-s2i-job:
@@ -44,8 +44,8 @@ jobs:
         with:
           path_context: './${{ env.TEST_REPO }}'
           builder_image: 'registry.access.redhat.com/devtools/go-toolset-rhel7'
-          image_name: ${{ env.IMAGE_NAME }}
-          image_tags: ${{ env.IMAGE_TAGS }}
+          image: ${{ env.IMAGE_NAME }}
+          tags: ${{ env.TAGS }}
 
       - name: Echo Outputs
         run: |

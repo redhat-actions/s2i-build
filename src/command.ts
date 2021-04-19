@@ -60,14 +60,25 @@ export class Command {
         }
     }
 
-    public static async tag(imageName: string, tags: string[]): Promise<CommandResult> {
+    public static async tag(image: string, tags: string[]): Promise<void> {
         // get docker cli
-        const dockerPath = await io.which("docker", true);
+        let dockerPath: string;
+
+        try {
+            dockerPath = await io.which("docker", true);
+        }
+        catch (error) {
+            core.debug(error);
+            core.setFailed(
+                "❌ Docker client not found. Make sure that docker client is installed before running this action"
+            );
+            return;
+        }
         const args: string[] = [ "tag" ];
         for (const tag of tags) {
-            args.push(`${imageName}:${tag}`);
+            args.push(`${image}:${tag}`);
         }
         core.info(`Tagging the built image with tags ${tags.toString()}`);
-        return Command.execute(dockerPath, args);
+        Command.execute(dockerPath, args);
     }
 }

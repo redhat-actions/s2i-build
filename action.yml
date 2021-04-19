@@ -6,12 +6,12 @@ branding:
   color: red
 inputs:
   builder_image:
-    description: 'The location of the s2i builder image.'
+    description: 'The path of the s2i builder image.'
     required: true
-  image_name:
+  image:
     description: 'The Name of the image to build'
     required: true
-  image_tags:
+  tags:
     description: 'The tags of the image to build. For multiple tags, seperate by a space. For example, "latest v1".'
     default: 'latest'
     required: false
