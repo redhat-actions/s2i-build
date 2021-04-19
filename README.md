@@ -48,7 +48,7 @@ Once an image has been built, [push-to-registry](https://github.com/redhat-actio
 For example, `spring-image`.
 
 `tags`: A list of the tags that were created, separated by spaces.<br>
-For example, `latest ${{ github.sha }}`.
+For example, `latest v1`.
 
 ## Builder Images
 

@@ -24,8 +24,8 @@ export async function run(): Promise<void> {
 
     const tagsList: string[] = tags.split(" ");
 
-    const version = "v1.3.1";
-    const binaryVersion: BinaryVersion = convertStringToBinaryVersion(version);
+    const s2iVersion = "v1.3.1";
+    const binaryVersion: BinaryVersion = convertStringToBinaryVersion(s2iVersion);
     const s2iBinary: FindBinaryStatus = await Installer.installS2i(binaryVersion, runnerOS);
 
     if (s2iBinary.found === false) {
@@ -33,17 +33,18 @@ export async function run(): Promise<void> {
     }
     Installer.addS2iToPath(s2iBinary.path, runnerOS);
 
-    core.debug(version);
+    core.debug(s2iVersion);
     core.debug(runnerOS);
 
     // info message if user doesn't provides any tag
-    if (!tagsList.length) {
+    if (tagsList.length === 0) {
         core.info(`Input "${Inputs.TAGS}" is not provided, using default tag "${DEFAULT_TAG}"`);
         tagsList.push(DEFAULT_TAG);
     }
 
-    const buildCmd = [ "build", pathContext, builderImage, `${image}:${tagsList[0]}`,
-        "--loglevel", logLevel ];
+    const buildCmd = [
+        "build", pathContext, builderImage, `${image}:${tagsList[0]}`, "--loglevel", logLevel,
+    ];
 
     if (envVars) {
         const sha = process.env.GITHUB_SHA;

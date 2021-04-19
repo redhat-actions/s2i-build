@@ -7,7 +7,8 @@ import * as core from "@actions/core";
 import * as exec from "@actions/exec";
 import * as io from "@actions/io";
 import * as path from "path";
-import CommandResult from "./types";
+import { CommandResult } from "./types";
+import { joinList } from "./utils/execHelper";
 
 export class Command {
     public static async execute(
@@ -61,24 +62,23 @@ export class Command {
     }
 
     public static async tag(image: string, tags: string[]): Promise<void> {
-        // get docker cli
         let dockerPath: string;
 
         try {
+            // get docker cli
             dockerPath = await io.which("docker", true);
         }
         catch (error) {
             core.debug(error);
-            core.setFailed(
+            throw new Error(
                 "❌ Docker client not found. Make sure that docker client is installed before running this action"
             );
-            return;
         }
         const args: string[] = [ "tag" ];
         for (const tag of tags) {
             args.push(`${image}:${tag}`);
         }
-        core.info(`Tagging the built image with tags ${tags.toString()}`);
-        Command.execute(dockerPath, args);
+        core.info(`Tagging the built image with tags ${joinList(tags)}`);
+        await Command.execute(dockerPath, args);
     }
 }
