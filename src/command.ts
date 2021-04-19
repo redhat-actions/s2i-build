@@ -63,16 +63,12 @@ export class Command {
 
     public static async tag(image: string, tags: string[]): Promise<void> {
         let dockerPath: string;
-
         try {
             // get docker cli
             dockerPath = await io.which("docker", true);
         }
         catch (error) {
-            core.debug(error);
-            throw new Error(
-                "❌ Docker client not found. Make sure that docker client is installed before running this action"
-            );
+            throw new Error(error);
         }
         const args: string[] = [ "tag" ];
         for (const tag of tags) {
