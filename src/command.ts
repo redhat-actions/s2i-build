@@ -62,14 +62,9 @@ export class Command {
     }
 
     public static async tag(image: string, tags: string[]): Promise<void> {
-        let dockerPath: string;
-        try {
-            // get docker cli
-            dockerPath = await io.which("docker", true);
-        }
-        catch (error) {
-            throw new Error(error);
-        }
+        // get docker cli
+        const dockerPath = await io.which("docker", true);
+
         const args: string[] = [ "tag" ];
         for (const tag of tags) {
             args.push(`${image}:${tag}`);
