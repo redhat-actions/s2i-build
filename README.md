@@ -27,64 +27,28 @@ Also see [buildah-build](https://github.com/redhat-actions/buildah-build) for mo
 
 Once an image has been built, [push-to-registry](https://github.com/redhat-actions/push-to-registry) can be used to push it to an image registry.
 
+<a id="action-inputs"></a>
+
 ## Action Inputs
 
-<table>
-  <thead>
-    <tr>
-      <th>Input</th>
-      <th>Required</th>
-      <th>Default</th>
-      <th>Description</th>
-    </tr>
-  </thead>
+| Input Name | Description | Default |
+| ---------- | ----------- | ------- |
+| builder_image | The path of the S2I builder image. A curated list of builder images can be found [here](./builder-images.md). | **Required**
+| env_vars | List of environment variable key-value pairs to pass to the S2I builder context. (eg. `key=value`, `mysecret=${{ secrets.MY_SECRET }}`). | None
+| image | Name to give to the output image. | **Required**
+| tags | The tags of the image to build. For multiple tags, separate by a space. For example, `latest ${{ github.sha }}` | `latest`
+| log_level | [Log level](https://github.com/openshift/source-to-image/blob/master/docs/cli.md#log-levels) when running S2I. Can be 0 (least verbose) to 5 (most verbose). | `1`
+| path_context | The location of the path to run S2I from. This should be the path where your source code is stored. | `.`
 
-  <tr>
-    <td>builder_image</td>
-    <td>Yes</td>
-    <td>-</td>
-    <td>
-      The location of the S2I builder image. A curated list of builder images can be found
-      <a href="./builder-images.md">here</a>.
-    </td>
-  </tr>
+<a id="outputs"></a>
 
-  <tr>
-    <td>image_name</td>
-     <td>Yes</td>
-    <td>-</td>
-    <td>The name of the image to produce. </td>
-  </tr>
+## Action Outputs
 
-  <tr>
-    <td>image_tag</td>
-    <td>No</td>
-    <td>latest</td>
-    <td>The tag of the image to produce.</td>
-  </tr>
+`image`: The name of the built image.<br>
+For example, `spring-image`.
 
-  <tr>
-    <td>path_context</td>
-    <td>No</td>
-    <td><code>.</code></td>
-    <td>The location of the path to run S2I from. This should be the path where your source code is stored.</td>
-  </tr>
-
-  <tr>
-    <td>log_level</td>
-    <td>No</td>
-    <td>1</td>
-    <td><a href="https://github.com/openshift/source-to-image/blob/master/docs/cli.md#log-levels">Log level</a> when running S2I. Can be 0 (least verbose) to 5 (most verbose).</td>
-  </tr>
-
-  <tr>
-    <td>env_vars</td>
-    <td>No</td>
-    <td>-</td>
-    <td>List of environment variable key-value pairs to pass to the s2i builder context. (eg. <code>key=value</code>, <code>mysecret=${{ secrets.MY_SECRET }}</code> ).</td>
-  </tr>
-
-</table>
+`tags`: A list of the tags that were created, separated by spaces.<br>
+For example, `latest v1`.
 
 ## Builder Images
 
@@ -102,29 +66,29 @@ Below is an example end to end workflow to build and push a Java application ima
 steps:
   env:
     IMAGE_NAME: my-java-app
-    IMAGE_TAG: v1
+    TAGS: v1 ${{ github.sha }}
 
   - name: Checkout
     uses: actions/checkout@v2
 
   # Setup S2i and Build container image
   - name: Setup and Build
-    uses: redhat-actions/s2i-build@v1
+    id: build_image
+    uses: redhat-actions/s2i-build@v2
     with:
       path_context: '.'
       # Builder image for a java project
       builder_image: 'registry.access.redhat.com/openjdk/openjdk-11-rhel7'
-      image_name: ${{ env.IMAGE_NAME }}
-      image_tag: ${{ env.IMAGE_TAG }}
+      image: ${{ env.IMAGE_NAME }}
+      tags: ${{ env.TAGS }}
 
   # Push Image to Quay registry
   - name: Push To Quay Action
-    uses: redhat-actions/push-to-registry@v1
+    uses: redhat-actions/push-to-registry@v2
     with:
-      image: ${{ env.IMAGE_NAME }}
-      tag: ${{ env.IMAGE_TAG }}
+      image: ${{ steps.build_image.outputs.image }}
+      tags: ${{ steps.build_image.outputs.tags }}
       registry: quay.io/${{ secrets.QUAY_USERNAME }}
       username: ${{ secrets.QUAY_USERNAME }}
       password: ${{ secrets.QUAY_PASSWORD }}
-
 ```

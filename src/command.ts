@@ -3,15 +3,19 @@
  *  Licensed under the MIT License. See LICENSE file in the project root for license information.
  *-----------------------------------------------------------------------------------------------*/
 
+import * as core from "@actions/core";
 import * as exec from "@actions/exec";
+import * as io from "@actions/io";
 import * as path from "path";
+import { CommandResult } from "./types";
+import { joinList } from "./utils/execHelper";
 
 export class Command {
     public static async execute(
         executable: string,
         args: string[],
-        execOptions: exec.ExecOptions = {},
-    ): Promise<{ exitCode: number; stdout: string; stderr: string }> {
+        execOptions: exec.ExecOptions & { group?: boolean } = {},
+    ): Promise<CommandResult> {
         let stdout = "";
         let stderr = "";
 
@@ -27,22 +31,45 @@ export class Command {
             },
         };
 
-        const exitCode = await exec.exec(executable, args, finalExecOptions);
-
-        if (execOptions.ignoreReturnCode !== true && exitCode !== 0) {
-            // Throwing the stderr as part of the Error makes the stderr show up in the action outline,
-            // which saves some clicking when debugging.
-            let error = `${path.basename(executable)} exited with code ${exitCode}`;
-            if (stderr) {
-                error += `\n${stderr}`;
-            }
-            throw new Error(error);
+        if (execOptions.group) {
+            const groupName = [ executable, ...args ].join(" ");
+            core.startGroup(groupName);
         }
 
-        return {
-            exitCode,
-            stdout,
-            stderr,
-        };
+        try {
+            const exitCode = await exec.exec(executable, args, finalExecOptions);
+
+            if (execOptions.ignoreReturnCode !== true && exitCode !== 0) {
+                // Throwing the stderr as part of the Error makes the stderr show up in the action outline,
+                // which saves some clicking when debugging.
+                let error = `${path.basename(executable)} exited with code ${exitCode}`;
+                if (stderr) {
+                    error += `\n${stderr}`;
+                }
+                throw new Error(error);
+            }
+
+            return {
+                exitCode, output: stdout, error: stderr,
+            };
+        }
+
+        finally {
+            if (execOptions.group) {
+                core.endGroup();
+            }
+        }
+    }
+
+    public static async tag(image: string, tags: string[]): Promise<void> {
+        // get docker cli
+        const dockerPath = await io.which("docker", true);
+
+        const args: string[] = [ "tag" ];
+        for (const tag of tags) {
+            args.push(`${image}:${tag}`);
+        }
+        core.info(`Tagging the built image with tags ${joinList(tags)}`);
+        await Command.execute(dockerPath, args);
     }
 }

@@ -13,7 +13,7 @@ on:
 env:
   TEST_REPO: helloworld
   IMAGE_NAME: hello-world
-  IMAGE_TAG: latest
+  TAGS: latest v1
 
 jobs:
   test-s2i-job:
@@ -39,13 +39,19 @@ jobs:
 
       # Setup S2i and Build container image
       - name: Setup and Build
+        id: build_image
         uses: ./s2i-build/
         with:
           path_context: './${{ env.TEST_REPO }}'
           builder_image: 'registry.access.redhat.com/devtools/go-toolset-rhel7'
-          image_name: ${{ env.IMAGE_NAME }}
-          image_tag: ${{ env.IMAGE_TAG }}
+          image: ${{ env.IMAGE_NAME }}
+          tags: ${{ env.TAGS }}
+
+      - name: Echo Outputs
+        run: |
+          echo "Image: ${{ steps.build_image.outputs.image }}"
+          echo "Tags: ${{ steps.build_image.outputs.tags }}"
 
       # Run image to verify the build
       - name: Run image
-        run: docker run ${{ env.IMAGE_NAME}}:${{ env.IMAGE_TAG }}
+        run: docker run ${{ env.IMAGE_NAME}}:latest

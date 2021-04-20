@@ -7,36 +7,44 @@ import * as fs from "fs";
 import * as path from "path";
 import { Command } from "./command";
 import { Installer } from "./installer";
-import { Inputs } from "./generated/inputs-outputs";
+import { Inputs, Outputs } from "./generated/inputs-outputs";
 import {
     BinaryVersion, convertStringToBinaryVersion, FindBinaryStatus, getReason,
 } from "./utils/execHelper";
 
 export async function run(): Promise<void> {
+    const DEFAULT_TAG = "latest";
     const builderImage = core.getInput(Inputs.BUILDER_IMAGE, { required: true });
-    const imageName = core.getInput(Inputs.IMAGE_NAME, { required: true });
-    const imageTag = core.getInput(Inputs.IMAGE_TAG, { required: false });
+    const image = core.getInput(Inputs.IMAGE, { required: true });
+    const tags = core.getInput(Inputs.TAGS, { required: false });
     const pathContext = core.getInput(Inputs.PATH_CONTEXT, { required: false });
     const logLevel = core.getInput(Inputs.LOG_LEVEL, { required: false });
     const envVars = core.getInput(Inputs.ENV_VARS, { required: false });
     const runnerOS = process.env.RUNNER_OS || process.platform;
 
-    const version = "v1.3.1";
-    core.debug(version);
-    core.debug(runnerOS);
+    const tagsList: string[] = tags.split(" ");
 
-    const binaryVersion: BinaryVersion = convertStringToBinaryVersion(version);
+    const s2iVersion = "v1.3.1";
+    const binaryVersion: BinaryVersion = convertStringToBinaryVersion(s2iVersion);
     const s2iBinary: FindBinaryStatus = await Installer.installS2i(binaryVersion, runnerOS);
 
     if (s2iBinary.found === false) {
         throw new Error(getReason(s2iBinary));
     }
-
     Installer.addS2iToPath(s2iBinary.path, runnerOS);
-    await Command.execute(s2iBinary.path, [ "version" ]);
 
-    const buildCmd = [ "build", pathContext, builderImage, `${imageName}:${imageTag}`,
-        "--loglevel", logLevel ];
+    core.debug(s2iVersion);
+    core.debug(runnerOS);
+
+    // info message if user doesn't provides any tag
+    if (tagsList.length === 0) {
+        core.info(`Input "${Inputs.TAGS}" is not provided, using default tag "${DEFAULT_TAG}"`);
+        tagsList.push(DEFAULT_TAG);
+    }
+
+    const buildCmd = [
+        "build", pathContext, builderImage, `${image}:${tagsList[0]}`, "--loglevel", logLevel,
+    ];
 
     if (envVars) {
         const sha = process.env.GITHUB_SHA;
@@ -55,6 +63,13 @@ export async function run(): Promise<void> {
     }
 
     await Command.execute(s2iBinary.path, buildCmd);
+
+    if (tagsList.length > 1) {
+        await Command.tag(image, tagsList);
+    }
+
+    core.setOutput(Outputs.IMAGE, image);
+    core.setOutput(Outputs.TAGS, tags);
 }
 
 run().catch(core.setFailed);
