@@ -22,6 +22,13 @@ export async function run(): Promise<void> {
     const envVars = core.getInput(Inputs.ENV_VARS, { required: false });
     const runnerOS = process.env.RUNNER_OS || process.platform;
 
+    // check if image name doesn't have "/" in it
+    if (image.indexOf("/") > -1) {
+        throw new Error(`❌ Image ${image} contains "/" in it's name. `
+        + `Make sure that image doesn't have "/" in it's name or do not provide `
+        + `namespace with the image name`);
+    }
+
     const tagsList: string[] = tags.split(" ");
 
     const s2iVersion = "v1.3.1";
@@ -56,7 +63,7 @@ export async function run(): Promise<void> {
         await fs.promises.writeFile(envFilePath, envVars);
 
         const envCount = envVars.split("\n").length;
-        core.info(`Writing ${envCount} environment variables to ${envFilePath}`);
+        core.info(`⏳ Writing ${envCount} environment variables to ${envFilePath}`);
 
         buildCmd.push("--environment-file");
         buildCmd.push(envFilePath);

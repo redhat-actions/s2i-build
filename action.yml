@@ -9,7 +9,9 @@ inputs:
     description: 'The path of the s2i builder image.'
     required: true
   image:
-    description: 'The Name of the image to build'
+    description: |
+      'The Name of the image to build. Image name should not contain any "/" i.e.
+      there is no need to provide image registry namespace.'
     required: true
   tags:
     description: 'The tags of the image to build. For multiple tags, seperate by a space. For example, "latest v1".'

@@ -35,7 +35,7 @@ Once an image has been built, [push-to-registry](https://github.com/redhat-actio
 | ---------- | ----------- | ------- |
 | builder_image | The path of the S2I builder image. A curated list of builder images can be found [here](./builder-images.md). | **Required**
 | env_vars | List of environment variable key-value pairs to pass to the S2I builder context. (eg. `key=value`, `mysecret=${{ secrets.MY_SECRET }}`). | None
-| image | Name to give to the output image. | **Required**
+| image | Name to give to the output image. Image name should not contain any `/` i.e. there is no need to provide image registry namespace.| **Required**
 | tags | The tags of the image to build. For multiple tags, separate by a space. For example, `latest ${{ github.sha }}` | `latest`
 | log_level | [Log level](https://github.com/openshift/source-to-image/blob/master/docs/cli.md#log-levels) when running S2I. Can be 0 (least verbose) to 5 (most verbose). | `1`
 | path_context | The location of the path to run S2I from. This should be the path where your source code is stored. | `.`

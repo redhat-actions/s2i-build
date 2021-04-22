@@ -17,7 +17,7 @@ env:
 
 jobs:
   test-s2i-job:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     # This will install latest version of s2i and
     # to build the image and using Docker we will
     # run the image to verify the build.

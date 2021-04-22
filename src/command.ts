@@ -69,7 +69,7 @@ export class Command {
         for (const tag of tags) {
             args.push(`${image}:${tag}`);
         }
-        core.info(`Tagging the built image with tags ${joinList(tags)}`);
+        core.info(`⏳ Tagging the built image with tags ${joinList(tags)}`);
         await Command.execute(dockerPath, args);
     }
 }
