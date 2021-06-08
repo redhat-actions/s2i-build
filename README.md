@@ -16,19 +16,18 @@ and letting the container prepare that source code for execution. The base
 S2I container images contain the language runtime and build tools needed for
 building and running the source code.
 
-To install `s2i` use [Openshift Tools Installer]
 This Action will install [the latest](https://github.com/openshift/source-to-image/releases/tag/v1.3.1) version of S2I.
 
-To install any specific version of `s2i` use [Openshift Tools Installer](https://github.com/marketplace/actions/openshift-client-installer).
+To install any specific version of `s2i` use [**openshift-tools-installer**](https://github.com/marketplace/actions/openshift-client-installer).
 
 **NOTE:**
 `s2i-build` only works on Linux platforms, because it relies on the Docker daemon.<br>
 If you are using GitHub's Ubuntu runners, the Docker daemon will already be available.
-Otherwise, you can use [Docker Setup Buildx](https://github.com/marketplace/actions/docker-setup-buildx) to set up and start the Docker daemon.
+Otherwise, you can use [docker-setup-buildx](https://github.com/marketplace/actions/docker-setup-buildx) to set up and start the Docker daemon.
 
-Also see [Buildah Build](https://github.com/marketplace/actions/buildah-build) for more configurable method of building images, from scratch or from a Dockerfile.
+Also see [**buildah-build**](https://github.com/marketplace/actions/buildah-build) for more configurable method of building images, from scratch or from a Dockerfile.
 
-Once an image has been built, [Push To Registry](https://github.com/marketplace/actions/push-to-registry) can be used to push it to an image registry.
+Once an image has been built, [**push-to-registry**](https://github.com/marketplace/actions/push-to-registry) can be used to push it to an image registry.
 
 <a id="action-inputs"></a>
 
