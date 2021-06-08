@@ -4,6 +4,7 @@
  *-----------------------------------------------------------------------------------------------*/
 import * as core from "@actions/core";
 import * as fs from "fs";
+import * as io from "@actions/io";
 import * as path from "path";
 import { Command } from "./command";
 import { Installer } from "./installer";
@@ -24,16 +25,27 @@ export async function run(): Promise<void> {
 
     const tagsList: string[] = tags.split(" ");
 
-    const s2iVersion = "v1.3.1";
-    const binaryVersion: BinaryVersion = convertStringToBinaryVersion(s2iVersion);
-    const s2iBinary: FindBinaryStatus = await Installer.installS2i(binaryVersion, runnerOS);
+    let s2iPath = await io.which("s2i", false);
 
-    if (s2iBinary.found === false) {
-        throw new Error(getReason(s2iBinary));
+    if (s2iPath === "") {
+        const s2iVersion = "v1.3.1";
+        core.info(`⏳ s2i is not installed. Installing s2i ${s2iVersion}`);
+        const binaryVersion: BinaryVersion = convertStringToBinaryVersion(s2iVersion);
+        const s2iBinary: FindBinaryStatus = await Installer.installS2i(binaryVersion, runnerOS);
+
+        if (s2iBinary.found === false) {
+            throw new Error(getReason(s2iBinary));
+        }
+
+        core.info(`✅ Sucessfully installed s2i.`);
+
+        s2iPath = s2iBinary.path;
     }
-    Installer.addS2iToPath(s2iBinary.path, runnerOS);
+    else {
+        core.info(`ℹ️ s2i is already installed, skipping installation`);
+    }
+    Installer.addS2iToPath(s2iPath, runnerOS);
 
-    core.debug(s2iVersion);
     core.debug(runnerOS);
 
     // info message if user doesn't provides any tag
@@ -62,7 +74,7 @@ export async function run(): Promise<void> {
         buildCmd.push(envFilePath);
     }
 
-    await Command.execute(s2iBinary.path, buildCmd);
+    await Command.execute(s2iPath, buildCmd);
 
     if (tagsList.length > 1) {
         await Command.tag(image, tagsList);

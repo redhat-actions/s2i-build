@@ -18,14 +18,16 @@ building and running the source code.
 
 This Action will install [the latest](https://github.com/openshift/source-to-image/releases/tag/v1.3.1) version of S2I.
 
+To install any specific version of `s2i` use [**openshift-tools-installer**](https://github.com/marketplace/actions/openshift-client-installer).
+
 **NOTE:**
 `s2i-build` only works on Linux platforms, because it relies on the Docker daemon.<br>
 If you are using GitHub's Ubuntu runners, the Docker daemon will already be available.
-Otherwise, you can use [Docker Setup Buildx](https://github.com/marketplace/actions/docker-setup-buildx) to set up and start the Docker daemon.
+Otherwise, you can use [docker-setup-buildx](https://github.com/marketplace/actions/docker-setup-buildx) to set up and start the Docker daemon.
 
-Also see [buildah-build](https://github.com/redhat-actions/buildah-build) for more configurable method of building images, from scratch or from a Dockerfile.
+Also see [**buildah-build**](https://github.com/marketplace/actions/buildah-build) for more configurable method of building images, from scratch or from a Dockerfile.
 
-Once an image has been built, [push-to-registry](https://github.com/redhat-actions/push-to-registry) can be used to push it to an image registry.
+Once an image has been built, [**push-to-registry**](https://github.com/marketplace/actions/push-to-registry) can be used to push it to an image registry.
 
 <a id="action-inputs"></a>
 

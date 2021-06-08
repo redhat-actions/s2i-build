@@ -31,14 +31,22 @@ jobs:
           path: 's2i-build'
 
       # Checkout hello-world repository for testing
-      - name: Checkout
+      - name: Checkout application
         uses: actions/checkout@v2
         with:
           repository: 'go-training/helloworld'
           path: ${{ env.TEST_REPO }}
 
-      # Setup S2i and Build container image
-      - name: Setup and Build
+      # Install s2i cli for future steps
+      - name: Install S2i
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          source: github
+          github_pat: ${{ github.token }}
+          s2i: "latest"
+
+      # Build container image
+      - name: Build
         id: build_image
         uses: ./s2i-build/
         with:
