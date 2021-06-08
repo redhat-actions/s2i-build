@@ -1,5 +1,8 @@
 # s2i-build Changelog
 
+## v2.1
+- Skip `s2i` installation if already installed in the runner.
+
 ## v2
 - Rename `image_tag` input to `tags`, to allow you to build multiple tags of the same image
 - Rename `image_name` input to `image` to maintain consistency across all redhat actions
