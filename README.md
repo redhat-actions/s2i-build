@@ -54,7 +54,9 @@ For example, `latest v1`.
 
 ## Builder Images
 
-Please refer [here](./builder-images.md) for a curated list of well maintained builder images to use for S2I.
+Please refer to [this curated list of well maintained builder images](./builder-images.md). 
+
+Many more images can be found under [sclorg](https://github.com/sclorg/).
 
 ## Examples
 
