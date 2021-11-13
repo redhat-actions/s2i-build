@@ -1,0 +1,2 @@
+- ad: Kaynaktan Görüntü Oluşturma
+  kullanır: redhat-actions/s2i-build@v2
