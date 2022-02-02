@@ -21,6 +21,7 @@ export async function run(): Promise<void> {
     const pathContext = core.getInput(Inputs.PATH_CONTEXT, { required: false });
     const logLevel = core.getInput(Inputs.LOG_LEVEL, { required: false });
     const envVars = core.getInput(Inputs.ENV_VARS, { required: false });
+    const includeGit = core.getInput(Inputs.INCLUDE_GIT, { required: false });
     const runnerOS = process.env.RUNNER_OS || process.platform;
 
     const tagsList: string[] = tags.split(" ");
@@ -55,8 +56,13 @@ export async function run(): Promise<void> {
     }
 
     const buildCmd = [
-        "build", pathContext, builderImage, `${image}:${tagsList[0]}`, "--loglevel", logLevel, "--copy", "--exclude=''"
+        "build", pathContext, builderImage, `${image}:${tagsList[0]}`, "--loglevel", logLevel
     ];
+
+    if (includeGit && includeGit != 'false') {
+        buildCmd.push("--copy");
+        buildCmd.push("--exclude=''");
+    }
 
     if (envVars) {
         const sha = process.env.GITHUB_SHA;

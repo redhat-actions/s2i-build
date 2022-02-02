@@ -36,6 +36,12 @@ export enum Inputs {
      * Default: "latest"
      */
     TAGS = "tags",
+    /**
+     * Include All Files during the S2I build including .git
+     * Required: false
+     * Default: "false"
+     */
+     INCLUDE_GIT = "include_git",
 }
 
 export enum Outputs {
