@@ -31,7 +31,7 @@ export enum Inputs {
      */
     PATH_CONTEXT = "path_context",
     /**
-     * The tags of the image to build. For multiple tags, seperate by a space. For example, "latest v1".
+     * The tags of the image to build. For multiple tags, separate by a space. For example, "latest v1".
      * Required: false
      * Default: "latest"
      */
