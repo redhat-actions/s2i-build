@@ -55,7 +55,7 @@ export async function run(): Promise<void> {
     }
 
     const buildCmd = [
-        "build", pathContext, builderImage, `${image}:${tagsList[0]}`, "--loglevel", logLevel, "--copy", "-exclude=''"
+        "build", pathContext, builderImage, `${image}:${tagsList[0]}`, "--loglevel", logLevel, "--copy"
     ];
 
     if (envVars) {
