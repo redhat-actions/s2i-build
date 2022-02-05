@@ -19,6 +19,12 @@ export enum Inputs {
      */
     IMAGE = "image",
     /**
+     * Include all files in tar during build which includes .git directory
+     * Required: false
+     * Default: "false"
+     */
+    INCLUDE_GIT = "include_git",
+    /**
      * Log level when running the S2I
      * Required: false
      * Default: "1"
@@ -31,17 +37,11 @@ export enum Inputs {
      */
     PATH_CONTEXT = "path_context",
     /**
-     * The tags of the image to build. For multiple tags, separate by a space. For example, "latest v1".
+     * The tags of the image to build. For multiple tags, seperate by a space. For example, "latest v1".
      * Required: false
      * Default: "latest"
      */
     TAGS = "tags",
-    /**
-     * Include All Files during the S2I build including .git
-     * Required: false
-     * Default: "false"
-     */
-     INCLUDE_GIT = "include_git",
 }
 
 export enum Outputs {

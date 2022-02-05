@@ -56,10 +56,10 @@ export async function run(): Promise<void> {
     }
 
     const buildCmd = [
-        "build", pathContext, builderImage, `${image}:${tagsList[0]}`, "--loglevel", logLevel
+        "build", pathContext, builderImage, `${image}:${tagsList[0]}`, "--loglevel", logLevel,
     ];
 
-    if (includeGit && includeGit != 'false') {
+    if (includeGit && includeGit !== "false") {
         buildCmd.push("--copy");
         buildCmd.push("--exclude=''");
     }
