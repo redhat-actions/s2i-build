@@ -19,6 +19,12 @@ export enum Inputs {
      */
     IMAGE = "image",
     /**
+     * Include all files in tar during build which includes .git directory
+     * Required: false
+     * Default: "false"
+     */
+    INCLUDE_GIT = "include_git",
+    /**
      * Log level when running the S2I
      * Required: false
      * Default: "1"

@@ -26,6 +26,10 @@ inputs:
   env_vars:
     description: 'List of environment variable key-value pairs to pass to the s2i builder context'
     required: false
+  include_git:
+    description: 'Include all files in tar during build which includes .git directory'
+    required: false
+    default: 'false'
 outputs:
   image:
     description: 'Name of the image built'
