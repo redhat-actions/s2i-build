@@ -1,5 +1,8 @@
 # s2i-build Changelog
 
+## v2.2
+- Feature include `.git` folder in s2i build. https://github.com/redhat-actions/s2i-build/pull/40
+
 ## v2.1
 - Skip `s2i` installation if already installed in the runner.
 

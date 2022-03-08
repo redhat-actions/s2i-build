@@ -41,6 +41,7 @@ Once an image has been built, [**push-to-registry**](https://github.com/marketpl
 | tags | The tags of the image to build. For multiple tags, separate by a space. For example, `latest ${{ github.sha }}` | `latest`
 | log_level | [Log level](https://github.com/openshift/source-to-image/blob/master/docs/cli.md#log-levels) when running S2I. Can be 0 (least verbose) to 5 (most verbose). | `1`
 | path_context | The location of the path to run S2I from. This should be the path where your source code is stored. | `.`
+| include_git | Include all files during the S2I build including the .git folder. Set to `true` to enable. | `false`
 
 <a id="outputs"></a>
 
