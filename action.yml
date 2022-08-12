@@ -1,4 +1,4 @@
-name: 'Source to Image Build'
+name: 'Image Memory Source'
 description: 'Build a container image from source code'
 author: 'Red Hat'
 branding:
