@@ -51,7 +51,7 @@ jobs:
         uses: ./s2i-build/
         with:
           path_context: './${{ env.TEST_REPO }}'
-          builder_image: 'registry.access.redhat.com/devtools/go-toolset-rhel7'
+          builder_image: 'centos/go-toolset-7-centos7'
           image: ${{ env.IMAGE_NAME }}
           tags: ${{ env.TAGS }}
 
