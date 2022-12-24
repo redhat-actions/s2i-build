@@ -2,7 +2,7 @@
   "name": "s2i-build",
   "version": "1.0.0",
   "engines": {
-    "node": "12"
+    "node": "16"
   },
   "description": "",
   "main": "dist/index.js",
