@@ -1,5 +1,8 @@
 # s2i-build Changelog
 
+## v2.3
+- Update action to run on Node16. https://github.blog/changelog/2022-05-20-actions-can-now-run-in-a-node-js-16-runtime/
+
 ## v2.2
 - Feature include `.git` folder in s2i build. https://github.com/redhat-actions/s2i-build/pull/40
 
