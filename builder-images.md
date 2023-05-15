@@ -7,8 +7,9 @@ Here is a non-exhaustive list of well maintained S2I builder images. Many more S
   - `registry.access.redhat.com/devtools/go-toolset-rhel7`
 
 - **java**
-  - `registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift`
-  - `registry.access.redhat.com/openjdk/openjdk-11-rhel7`
+  - `registry.access.redhat.com/ubi8/openjdk-8`
+  - `registry.access.redhat.com/ubi9/openjdk-11`
+  - `registry.access.redhat.com/ubi9/openjdk-17`
   - `fabric8/s2i-java`
 
 - **nodejs**
