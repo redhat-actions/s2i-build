@@ -16,7 +16,7 @@ and letting the container prepare that source code for execution. The base
 S2I container images contain the language runtime and build tools needed for
 building and running the source code.
 
-This Action will install [the latest](https://github.com/openshift/source-to-image/releases/tag/v1.3.1) version of S2I.
+This Action will install [the latest](https://github.com/openshift/source-to-image/releases/tag/v1.3.9) version of S2I.
 
 To install any specific version of `s2i` use [**openshift-tools-installer**](https://github.com/marketplace/actions/openshift-tools-installer).
 **NOTE:**

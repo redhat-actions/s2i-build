@@ -40,7 +40,7 @@ export function convertStringToBinaryVersion(version: string): BinaryVersion {
         return { valid: true, type: "url", value: version };
     }
 
-    const regexVersion = new RegExp("[0-9]+[.]{1}[0-9]+[.]{0,1}[0-9]*");
+    const regexVersion = /[0-9]+[.]{1}[0-9]+[.]{0,1}[0-9]*/;
     const versionObj = regexVersion.exec(version);
     if (versionObj && versionObj.length > 0) {
         return { valid: true, type: "number", value: version };

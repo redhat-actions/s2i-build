@@ -29,7 +29,7 @@ export async function run(): Promise<void> {
     let s2iPath = await io.which("s2i", false);
 
     if (s2iPath === "") {
-        const s2iVersion = "v1.3.1";
+        const s2iVersion = "v1.3.9";
         core.info(`⏳ s2i is not installed. Installing s2i ${s2iVersion}`);
         const binaryVersion: BinaryVersion = convertStringToBinaryVersion(s2iVersion);
         const s2iBinary: FindBinaryStatus = await Installer.installS2i(binaryVersion, runnerOS);

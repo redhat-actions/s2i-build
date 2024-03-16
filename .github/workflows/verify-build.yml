@@ -26,13 +26,13 @@ jobs:
 
       # Checkout S2I action github repository
       - name: Checkout s2i-build action
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           path: 's2i-build'
 
       # Checkout hello-world repository for testing
       - name: Checkout application
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           repository: 'go-training/helloworld'
           path: ${{ env.TEST_REPO }}

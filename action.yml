@@ -36,5 +36,5 @@ outputs:
   tags:
     description: 'List of the tags that were created, separated by spaces'
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'
