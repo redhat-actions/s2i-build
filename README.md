@@ -18,8 +18,7 @@ building and running the source code.
 
 This Action will install [the latest](https://github.com/openshift/source-to-image/releases/tag/v1.3.1) version of S2I.
 
-To install any specific version of `s2i` use [**openshift-tools-installer**](https://github.com/marketplace/actions/openshift-client-installer).
-
+To install any specific version of `s2i` use [**openshift-tools-installer**](https://github.com/marketplace/actions/openshift-tools-installer).
 **NOTE:**
 `s2i-build` only works on Linux platforms, because it relies on the Docker daemon.<br>
 If you are using GitHub's Ubuntu runners, the Docker daemon will already be available.
