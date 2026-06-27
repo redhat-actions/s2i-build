@@ -38,7 +38,7 @@ export async function run(): Promise<void> {
             throw new Error(getReason(s2iBinary));
         }
 
-        core.info(`✅ Sucessfully installed s2i.`);
+        core.info(`✅ Successfully installed s2i.`);
 
         s2iPath = s2iBinary.path;
     }
