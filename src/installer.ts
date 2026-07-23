@@ -3,10 +3,10 @@
  *  Licensed under the MIT License. See LICENSE file in the project root for license information.
  *-----------------------------------------------------------------------------------------------*/
 import * as core from "@actions/core";
-import * as fs from "mz/fs";
-import * as glob from "glob";
-import * as ioUtil from "@actions/io/lib/io-util";
+import * as fs from "fs";
+import * as path from "path";
 import * as tc from "@actions/tool-cache";
+import { glob } from "glob";
 import { BinaryVersion, FindBinaryStatus } from "./utils/execHelper";
 import {
     S2I_BASE_URL, S2I_WIN_ZIP, S2I_MACOSX_TAR_GZ, S2I_LINUX_TAR_GZ,
@@ -74,18 +74,14 @@ export class Installer {
             return { found: false, reason: "URL where to download s2i is not valid." };
         }
 
-        let downloadDir = "";
         const pathS2iArchive = await tc.downloadTool(url);
-        if (runnerOS === "Windows") {
-            downloadDir = await tc.extractZip(pathS2iArchive);
-        }
-        else {
-            downloadDir = await tc.extractTar(pathS2iArchive);
-        }
+        const downloadDir = runnerOS === "Windows"
+            ? await tc.extractZip(pathS2iArchive)
+            : await tc.extractTar(pathS2iArchive);
 
         let s2iBinary: string = Installer.s2iBinaryByOS(runnerOS);
         s2iBinary = await Installer.findS2iFile(downloadDir, s2iBinary);
-        if (!(await ioUtil.exists(s2iBinary))) {
+        if (!fs.existsSync(s2iBinary)) {
             return {
                 found: false,
                 reason: `An error occurred while downloading and extracting s2i binary from ${url}.`
@@ -120,21 +116,16 @@ export class Installer {
     }
 
     private static s2iBinaryByOS(osType: string): string {
-        if (osType.includes("Windows")) return "s2i.exe";
+        if (osType.includes("Windows")) { return "s2i.exe"; }
         return "s2i";
     }
 
     static async findS2iFile(folder: string, file: string): Promise<string> {
-        return new Promise((resolve, reject) => {
-            glob(`${folder}/**/${file}`, (err, res) => {
-                if (err) {
-                    reject(new Error(`Unable to find s2i exewcutable inside the directory ${folder}`));
-                }
-                else {
-                    resolve(res[0]);
-                }
-            });
-        });
+        const results = await glob(`${folder}/**/${file}`);
+        if (results.length === 0) {
+            throw new Error(`Unable to find s2i executable inside the directory ${folder}`);
+        }
+        return results[0];
     }
 
     /**
@@ -143,18 +134,12 @@ export class Installer {
      * @param s2iPath the full path to the s2i binary. Must be a non null.
      * @param osType the OS type. One of 'Linux', 'Darwin' or 'Windows_NT'.
      */
-    static addS2iToPath(s2iPath: string, osType: string): void {
+    static addS2iToPath(s2iPath: string, _osType: string): void {
         if (!s2iPath) {
             core.debug("Unable to add null or empty s2i path to the PATH.");
             return;
         }
-        let dir = "";
-        if (osType.includes("Windows")) {
-            dir = s2iPath.substr(0, s2iPath.lastIndexOf("\\"));
-        }
-        else {
-            dir = s2iPath.substr(0, s2iPath.lastIndexOf("/"));
-        }
+        const dir = path.dirname(s2iPath);
         core.addPath(dir);
     }
 }
