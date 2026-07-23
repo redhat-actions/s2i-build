@@ -7,10 +7,10 @@ import * as fs from "fs";
 import * as path from "path";
 import * as tc from "@actions/tool-cache";
 import { glob } from "glob";
-import { BinaryVersion, FindBinaryStatus } from "./utils/execHelper";
+import { BinaryVersion, FindBinaryStatus } from "./utils/execHelper.js";
 import {
     S2I_BASE_URL, S2I_WIN_ZIP, S2I_MACOSX_TAR_GZ, S2I_LINUX_TAR_GZ,
-} from "./constants";
+} from "./constants.js";
 
 const S2I_TOOL_NAME = "s2i";
 

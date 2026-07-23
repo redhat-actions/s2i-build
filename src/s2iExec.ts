@@ -6,12 +6,12 @@ import * as core from "@actions/core";
 import * as fs from "fs";
 import * as io from "@actions/io";
 import * as path from "path";
-import { Command } from "./command";
-import { Installer } from "./installer";
-import { Inputs, Outputs } from "./generated/inputs-outputs";
+import { Command } from "./command.js";
+import { Installer } from "./installer.js";
+import { Inputs, Outputs } from "./generated/inputs-outputs.js";
 import {
     BinaryVersion, convertStringToBinaryVersion, FindBinaryStatus, getReason,
-} from "./utils/execHelper";
+} from "./utils/execHelper.js";
 
 export async function run(): Promise<void> {
     const DEFAULT_TAG = "latest";
