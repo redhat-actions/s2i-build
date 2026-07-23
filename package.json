@@ -36,7 +36,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@redhat-actions/action-io-generator": "^1.5.0",
-    "@types/node": "^24",
+    "@types/node": "^26",
     "@types/valid-url": "^1.0.7",
     "@vercel/ncc": "^0.44.1",
     "eslint": "^10.7.0",
