@@ -7,8 +7,8 @@ import * as core from "@actions/core";
 import * as exec from "@actions/exec";
 import * as io from "@actions/io";
 import * as path from "path";
-import { CommandResult } from "./types";
-import { joinList } from "./utils/execHelper";
+import { CommandResult } from "./types.js";
+import { joinList } from "./utils/execHelper.js";
 
 export class Command {
     public static async execute(
