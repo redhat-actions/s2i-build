@@ -65,11 +65,15 @@ export class Command {
         // get docker cli
         const dockerPath = await io.which("docker", true);
 
-        const args: string[] = [ "tag" ];
-        for (const tag of tags) {
-            args.push(`${image}:${tag}`);
+        // The first tag was already applied during the s2i build.
+        // Tag the remaining tags from the first one.
+        const sourceTag = `${image}:${tags[0]}`;
+        const remainingTags = tags.slice(1);
+
+        core.info(`Tagging the built image with tags ${joinList(remainingTags)}`);
+        for (const tag of remainingTags) {
+            // docker tag requires exactly 2 args: SOURCE_IMAGE TARGET_IMAGE
+            await Command.execute(dockerPath, [ "tag", sourceTag, `${image}:${tag}` ]);
         }
-        core.info(`Tagging the built image with tags ${joinList(tags)}`);
-        await Command.execute(dockerPath, args);
     }
 }
