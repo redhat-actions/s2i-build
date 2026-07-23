@@ -12,10 +12,22 @@ import {
     S2I_BASE_URL, S2I_WIN_ZIP, S2I_MACOSX_TAR_GZ, S2I_LINUX_TAR_GZ,
 } from "./constants";
 
+const S2I_TOOL_NAME = "s2i";
+
 export class Installer {
     static async installS2i(versionToUse: BinaryVersion, runnerOS: string): Promise<FindBinaryStatus> {
         if (versionToUse.valid === false) {
             return { found: false, reason: versionToUse.reason };
+        }
+
+        // Check the tool cache first
+        if (versionToUse.type === "number" || versionToUse.type === "latest") {
+            const cachedPath = tc.find(S2I_TOOL_NAME, versionToUse.value);
+            if (cachedPath) {
+                core.info(`Found s2i ${versionToUse.value} in tool cache`);
+                const s2iBinary = path.join(cachedPath, Installer.s2iBinaryByOS(runnerOS));
+                return { found: true, path: s2iBinary };
+            }
         }
 
         const url = await Installer.getS2iURLToDownload(versionToUse, runnerOS);
@@ -24,7 +36,7 @@ export class Installer {
         }
 
         core.debug(`downloading: ${url}`);
-        const s2iBinary = await Installer.downloadAndExtract(url, runnerOS);
+        const s2iBinary = await Installer.downloadAndExtract(url, runnerOS, versionToUse);
         return s2iBinary;
     }
 
@@ -69,7 +81,9 @@ export class Installer {
         return url;
     }
 
-    static async downloadAndExtract(url: string, runnerOS: string): Promise<FindBinaryStatus> {
+    static async downloadAndExtract(
+        url: string, runnerOS: string, version: BinaryVersion,
+    ): Promise<FindBinaryStatus> {
         if (!url) {
             return { found: false, reason: "URL where to download s2i is not valid." };
         }
@@ -89,6 +103,15 @@ export class Installer {
             };
         }
         fs.chmodSync(s2iBinary, "0755");
+
+        // Cache the binary for future runs
+        if (version.valid && (version.type === "number" || version.type === "latest")) {
+            const s2iDir = path.dirname(s2iBinary);
+            const cachedDir = await tc.cacheDir(s2iDir, S2I_TOOL_NAME, version.value);
+            s2iBinary = path.join(cachedDir, Installer.s2iBinaryByOS(runnerOS));
+            core.info(`Cached s2i ${version.value} in tool cache`);
+        }
+
         return { found: true, path: s2iBinary };
     }
 

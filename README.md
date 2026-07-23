@@ -16,7 +16,7 @@ and letting the container prepare that source code for execution. The base
 S2I container images contain the language runtime and build tools needed for
 building and running the source code.
 
-This Action will install [the latest](https://github.com/openshift/source-to-image/releases/tag/v1.3.9) version of S2I.
+This Action will install [the latest](https://github.com/openshift/source-to-image/releases/tag/v1.6.2) version of S2I.
 
 To install any specific version of `s2i` use [**openshift-tools-installer**](https://github.com/marketplace/actions/openshift-tools-installer).
 **NOTE:**
@@ -34,7 +34,7 @@ Once an image has been built, [**push-to-registry**](https://github.com/marketpl
 
 | Input Name | Description | Default |
 | ---------- | ----------- | ------- |
-| builder_image | The path of the S2I builder image. A curated list of builder images can be found [here](./builder-images.md). | **Required**
+| builder_image | The S2I builder image (e.g. `centos/go-toolset-7-centos7`). A curated list of builder images can be found [here](./builder-images.md). | **Required**
 | env_vars | List of environment variable key-value pairs to pass to the S2I builder context. (eg. `key=value`, `mysecret=${{ secrets.MY_SECRET }}`). | None
 | image | Name to give to the output image. | **Required**
 | tags | The tags of the image to build. For multiple tags, separate by a space. For example, `latest ${{ github.sha }}` | `latest`
@@ -60,20 +60,16 @@ Many more images can be found under [sclorg](https://github.com/sclorg/).
 
 ## Examples
 
-Below is an example end to end workflow to build and push a Java application image using s2i-build.
+### Basic: Build and push a Java application
 
 ```yaml
-# This workflow builds a container image of a java
-# application using the source to image build strategy,
-# and pushes the image to quay.io.
-
 steps:
   env:
     IMAGE_NAME: my-java-app
     TAGS: v1 ${{ github.sha }}
 
   - name: Checkout
-    uses: actions/checkout@v2
+    uses: actions/checkout@v7
 
   # Setup S2i and Build container image
   - name: Setup and Build
@@ -95,4 +91,69 @@ steps:
       registry: quay.io/${{ secrets.QUAY_USERNAME }}
       username: ${{ secrets.QUAY_USERNAME }}
       password: ${{ secrets.QUAY_PASSWORD }}
+```
+
+### Build from pre-compiled artifacts (binary build)
+
+If you compile your application in a prior step (e.g. `mvn package`), you can use S2I's binary build mode to inject the compiled artifacts directly into the builder image. This produces smaller images by skipping the build tools.
+
+Point `path_context` at the directory containing your build output:
+
+```yaml
+steps:
+  - name: Checkout
+    uses: actions/checkout@v7
+
+  - name: Build application
+    run: mvn package -DskipTests
+
+  - name: Build image from artifacts
+    uses: redhat-actions/s2i-build@v2
+    with:
+      path_context: './target'
+      builder_image: 'registry.access.redhat.com/openjdk/openjdk-11-rhel7'
+      image: my-app
+```
+
+### Pass environment variables (e.g. Maven settings)
+
+Use `env_vars` to pass configuration to the S2I builder at build time. This is useful for setting Maven mirrors, proxies, or injecting credentials:
+
+```yaml
+  - name: Build with custom Maven settings
+    uses: redhat-actions/s2i-build@v2
+    with:
+      path_context: '.'
+      builder_image: 'registry.access.redhat.com/openjdk/openjdk-11-rhel7'
+      image: my-app
+      env_vars: |
+        MAVEN_MIRROR_URL=https://my-nexus.example.com/repository/maven-public/
+        MAVEN_ARGS_APPEND=-DskipTests
+```
+
+For private Maven repositories requiring authentication, write a `settings.xml` before the build and reference it via environment variables:
+
+```yaml
+  - name: Write Maven settings
+    run: |
+      mkdir -p $HOME/.m2
+      cat > $HOME/.m2/settings.xml << 'XML'
+      <settings>
+        <servers>
+          <server>
+            <id>my-repo</id>
+            <username>${{ secrets.MAVEN_USERNAME }}</username>
+            <password>${{ secrets.MAVEN_PASSWORD }}</password>
+          </server>
+        </servers>
+      </settings>
+      XML
+
+  - name: Build with private repo access
+    uses: redhat-actions/s2i-build@v2
+    with:
+      path_context: '.'
+      builder_image: 'registry.access.redhat.com/openjdk/openjdk-11-rhel7'
+      image: my-app
+      include_git: 'true'
 ```
