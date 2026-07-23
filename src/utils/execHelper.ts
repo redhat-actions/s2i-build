@@ -4,7 +4,7 @@
  *-----------------------------------------------------------------------------------------------*/
 import * as validUrl from "valid-url";
 
- interface BinaryVersionValid {
+interface BinaryVersionValid {
     readonly valid: true;
     readonly type: "url" | "number" | "latest";
     readonly value: string;

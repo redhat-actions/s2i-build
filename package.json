@@ -5,7 +5,15 @@
   "engines": {
     "node": ">=20"
   },
-  "description": "",
+  "description": "Build a container image from source code using Source-to-Image (s2i)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/redhat-actions/s2i-build.git"
+  },
+  "bugs": {
+    "url": "https://github.com/redhat-actions/s2i-build/issues"
+  },
+  "homepage": "https://github.com/redhat-actions/s2i-build#readme",
   "main": "dist/index.js",
   "scripts": {
     "compile": "tsc -p .",
