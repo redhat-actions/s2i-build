@@ -47,7 +47,7 @@ jobs:
 
       # Install s2i cli for future steps
       - name: Install S2i
-        uses: redhat-actions/openshift-tools-installer@v1
+        uses: redhat-actions/openshift-tools-installer@v2
         with:
           source: github
           github_pat: ${{ github.token }}
