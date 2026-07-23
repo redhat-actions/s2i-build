@@ -5,10 +5,18 @@
 name: Verify Build
 on:
   push:
+    branches: [main]
   workflow_dispatch:
   pull_request:
   schedule:
     - cron: '0 0 * * *'  # every day at midnight
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   TEST_REPO: helloworld
@@ -17,7 +25,7 @@ env:
 
 jobs:
   test-s2i-job:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     # This will install latest version of s2i and
     # to build the image and using Docker we will
     # run the image to verify the build.
@@ -26,13 +34,13 @@ jobs:
 
       # Checkout S2I action github repository
       - name: Checkout s2i-build action
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: 's2i-build'
 
       # Checkout hello-world repository for testing
       - name: Checkout application
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: 'go-training/helloworld'
           path: ${{ env.TEST_REPO }}
@@ -62,4 +70,4 @@ jobs:
 
       # Run image to verify the build
       - name: Run image
-        run: docker run ${{ env.IMAGE_NAME}}:latest
+        run: docker run ${{ env.IMAGE_NAME }}:latest
