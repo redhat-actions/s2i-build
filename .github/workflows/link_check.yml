@@ -23,6 +23,6 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
-      - uses: gaurav-nelson/github-action-markdown-link-check@v1
+      - uses: lycheeverse/lychee-action@v2
         with:
-          use-verbose-mode: true
+          args: --verbose --no-progress '**/*.md'
