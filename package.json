@@ -35,12 +35,12 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@redhat-actions/action-io-generator": "^1.5.0",
+    "@redhat-actions/action-io-generator": "^1.6.0",
     "@types/node": "^26",
     "@types/valid-url": "^1.0.7",
     "@vercel/ncc": "^0.45.0",
-    "eslint": "^10.9.1",
+    "eslint": "^10.10.0",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.69.0"
+    "typescript-eslint": "^8.70.0"
   }
 }
