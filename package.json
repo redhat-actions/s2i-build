@@ -30,7 +30,7 @@
     "@actions/exec": "^3.0.0",
     "@actions/io": "^3.0.2",
     "@actions/tool-cache": "^4.0.0",
-    "glob": "^13.0.6",
+    "glob": "^14.0.4",
     "valid-url": "^1.0.9"
   },
   "devDependencies": {
